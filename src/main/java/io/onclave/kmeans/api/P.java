@@ -16,7 +16,7 @@ public class P {
     public static final String CLUSTER_INPUT_FILE = "kmeans_input.txt";
     public static final String BLANK_STRING = "";
     public static final String CONFIGURATION_CONFIGURE_1 = "\n\n|--------K-MEANS--------|\n\nEnter number of centroids to introduce (value of K): ";
-    public static final String LOG_CLUSTER_1 = "----------------CENTROID : ";
+    public static final String LOG_CLUSTER_1 = "\n\n----------------CENTROID : ";
     public static final String LOG_CLUSTER_2 = "----------------";
     
     public static void p(final String string) {
@@ -35,6 +35,10 @@ public class P {
         }).forEach((pair) -> {
             ((List<Point>) pair.getValue()).stream().forEach((point) -> { p(point.toString()); });
         });
+    }
+    
+    public static void logCoordinateChange(final Point freshPoint, final Point stalePoint) {
+        P.p("Centroid position has changed | X : " + stalePoint.getX_coordinate() + " -> " + freshPoint.getX_coordinate() + " | Y : " + stalePoint.getY_coordinate() + " -> " + freshPoint.getY_coordinate());
     }
     
     public static void logPoints(List<Point> points) {

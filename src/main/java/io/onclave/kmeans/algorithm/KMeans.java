@@ -19,15 +19,17 @@ public class KMeans {
     
     public static void main(String[] args) throws IOException {
         
+        int iteration = 0;
         List<Point> points = Service.prepareInputPoints();
         HashMap<Point, List<Point>> staleClusters;
         
         Configuration.configure();
         
         do {
-            staleClusters = Configuration.clusters;
+            P.p("Pass : " + iteration + " | ", false);
+            staleClusters = Configuration.cloner.deepClone(Configuration.clusters);
             Service.reassignCluster(points);
-        } while(Service.hasCentroidsChangedPosition(staleClusters));
+        } while(Service.hasCentroidsChangedPosition(staleClusters) && ++iteration < Configuration.MAX_ITERATIONS);
         
         P.logPoints(points);
         P.logCluster();

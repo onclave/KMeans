@@ -3,6 +3,7 @@
  */
 package io.onclave.kmeans.api;
 
+import com.rits.cloning.Cloner;
 import io.onclave.kmeans.datastructure.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Configuration {
     
     public static int k;
+    public static final int MAX_ITERATIONS = 10000;
+    public static final Cloner cloner = new Cloner();
     private static final int MAX_CENTROID_Y = +50;
     private static final int MIN_CENTROID_X = -50;
     public static HashMap<Point, List<Point>> clusters = new HashMap<>();

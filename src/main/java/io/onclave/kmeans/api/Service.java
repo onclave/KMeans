@@ -20,7 +20,9 @@ import java.util.Map;
 public class Service {
     
     public static void reassignCluster(List<Point> points) {
-         
+        
+        resetClusters();
+        
         points.stream().forEach((Point point) -> {
             int position = 0;
             float[] distanceArray = new float[Configuration.getK()];
@@ -48,8 +50,25 @@ public class Service {
         });
     }
     
+    public static void resetClusters() {
+        Configuration.clusters.entrySet().stream().forEach((cluster) -> {
+            cluster.setValue(new ArrayList<>());
+        });
+    }
+    
     public static boolean hasCentroidsChangedPosition(final HashMap<Point, List<Point>> staleClusters) {
-        return staleClusters.entrySet().stream().anyMatch((staleCluster) -> (Configuration.clusters.entrySet().stream().filter((cluster) -> (((Point) cluster.getKey()).getId().equals(((Point) staleCluster.getKey()).getId()))).anyMatch((cluster) -> ((((Point) cluster.getKey()).getX_coordinate() != ((Point) staleCluster.getKey()).getX_coordinate()) || (((Point) cluster.getKey()).getY_coordinate() != ((Point) staleCluster.getKey()).getY_coordinate())))));
+        for(Map.Entry<Point, List<Point>> staleCluster : staleClusters.entrySet()) {
+            for(Map.Entry<Point, List<Point>> cluster : Configuration.clusters.entrySet()) {
+                if(cluster.getKey().getId().equals(staleCluster.getKey().getId())) {
+                    if((cluster.getKey().getX_coordinate() != staleCluster.getKey().getX_coordinate()) || (cluster.getKey().getY_coordinate() != staleCluster.getKey().getY_coordinate())) {
+                        P.logCoordinateChange(cluster.getKey(), staleCluster.getKey());
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        P.p("End Iteration"); return false;
     }
     
     public static List<Point> prepareInputPoints() throws FileNotFoundException, IOException {
